@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.example.testaidlservice.Book
 import com.example.testaidlservice.BookManager
+import com.example.testaidlservice.IOnNewBookArrivedListener
 
 
 class MainActivity : AppCompatActivity() {
@@ -64,14 +65,37 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private val mOnNewBookArrivedListener = object : IOnNewBookArrivedListener.Stub(){
+        override fun onNewBookArrived(newBook: Book?) {
+            Log.d("testService", "mOnNewBookArrivedListener")
+        }
+
+    }
+
     val connection2: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             Log.d("testService", "onServiceConnected")
             manager = BookManager.Stub.asInterface(service)
+            manager?.registerCallback(mOnNewBookArrivedListener)
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
             manager = null
         }
+    }
+
+    override fun onDestroy() {
+        manager?.let {
+            if(it.asBinder().isBinderAlive){
+                try {
+                    manager?.unregisterCallback(mOnNewBookArrivedListener)
+                } catch (e:RemoteException){
+                    e.printStackTrace()
+                }
+
+            }
+        }
+        unbindService(connection2)
+        super.onDestroy()
     }
 }
