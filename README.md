@@ -56,5 +56,30 @@
         }
     }
   ```
+  注意：Service端接收回调对象的时候要使用RemoteCallbackList
+  
+  ```
+  val mListenerList: RemoteCallbackList<IOnNewBookArrivedListener> = RemoteCallbackList()
+  
+  
+  override fun unregisterCallback(listener: IOnNewBookArrivedListener?) {
+            mListenerList.unregister(listener)
+  }
+
+  override fun registerCallback(listener: IOnNewBookArrivedListener?) {
+            mListenerList.register(listener)
+  }
+  ```
+  因为在多进程中，Binder会把客户端传来的对象重新转化成一个新的对象。
+  
+  虽然在注册和解注册的时候使用的是同一个客户端对象，但是通过Binder传递到服务端后，却会产生两个全新的对象。
+  
+  对象是不能跨进程传输的，对象的跨进程传输本质上都是反序列化的过程。这就是Aidl中的自定义对象都要实现Parcelable接口的原因。
+  
+  RemoteCallbackList是系统专门提供的用于删除跨进程listener的接口，在他的内部有一个Map结构专门用来保存所有的aidl回调，这个Map的key是IBinder类型，value是Callback类型，
+  
+  其中callback中封装了真正的远程listener,当客户端注册listener时，它会把这个listener存入mCallback中。虽说多次开进程传输客户端的同一个对象会在服务端生成不用的对象，
+  
+  但这些新生成的对象有一个共同点，那就是它们底层的Binder对象时同一个利用这个特性就可以实现解注册功能。
   
   
