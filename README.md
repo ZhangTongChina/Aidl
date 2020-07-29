@@ -17,7 +17,11 @@
 ## Service回调Ancicity
   增加两个接口:
   
-   `void registerCallback(IOnNewBookArrivedListener  listener);`
+   `
+   //注册回调
+   void registerCallback(IOnNewBookArrivedListener  listener);`
 
-   `void unregisterCallback(IOnNewBookArrivedListener  listener);`
+   `
+   //解注册回调
+   void unregisterCallback(IOnNewBookArrivedListener  listener);`
   
