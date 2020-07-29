@@ -19,9 +19,11 @@
   
    `
    //注册回调
+   
    void registerCallback(IOnNewBookArrivedListener  listener);`
 
    `
    //解注册回调
+   
    void unregisterCallback(IOnNewBookArrivedListener  listener);`
   
