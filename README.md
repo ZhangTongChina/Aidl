@@ -35,4 +35,26 @@
   }
   ```
   
+  链接service后调用registerCallback()方法注册回调。
+  ```
+      private val mOnNewBookArrivedListener = object : IOnNewBookArrivedListener.Stub(){
+        override fun onNewBookArrived(newBook: Book?) {
+            Log.d("testService", "mOnNewBookArrivedListener")
+        }
+
+    }
+
+    val connection2: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            Log.d("testService", "onServiceConnected")
+            manager = BookManager.Stub.asInterface(service)
+            manager?.registerCallback(mOnNewBookArrivedListener)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            manager = null
+        }
+    }
+  ```
+  
   
