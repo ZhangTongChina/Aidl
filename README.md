@@ -28,3 +28,9 @@
    ```
   
   为client端增加aidl文件，用于接收service端的回调
+  ```
+  interface IOnNewBookArrivedListener {
+        //用于接收service端回调 当有新书到货通知客户端
+        void onNewBookArrived(in Book newBook);
+  }
+  ```
