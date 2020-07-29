@@ -13,4 +13,11 @@
   2.创建远程Sercive(实现Aidl文件中的接口)
   
   3.客户端链接Binder(服务端与客户端的Aidl包名路径要一致)
-## 基本实现
+  
+## Service回调Ancicity
+  增加两个接口:
+  
+   `void registerCallback(IOnNewBookArrivedListener  listener);`
+
+   `void unregisterCallback(IOnNewBookArrivedListener  listener);`
+  
