@@ -15,17 +15,16 @@
   3.客户端链接Binder(服务端与客户端的Aidl包名路径要一致)
   
 ## Service回调Ancicity
-  增加两个接口:
+  service增加两个接口用于注册和解注册:
   
    ```
    //注册回调
-   
    void registerCallback(IOnNewBookArrivedListener  listener);
    ```
 
    ```
    //解注册回调
-   
    void unregisterCallback(IOnNewBookArrivedListener  listener);
    ```
   
+  为client端增加aidl文件，用于接收service端的回调
